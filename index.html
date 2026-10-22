@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VisionHub Script</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .card {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 550px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #e2e8f0;
+      text-align: center;
+    }
+
+    .code-box {
+      background-color: #090d16;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #38bdf8;
+      word-break: break-all;
+      white-space: pre-wrap;
+      user-select: all;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ffffff;
+      background-color: #2563eb;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      touch-action: manipulation;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button.copied {
+      background-color: #16a34a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>VisionHub Loadstring</h1>
+    <div class="code-box">
+      <code id="scriptText">loadstring(game:HttpGet("https://raw.githubusercontent.com/oorialdev/visionhub/refs/heads/main/visionhub.lua"))()</code>
+    </div>
+    <button id="copyBtn" onclick="copyScript()">Copy Script</button>
+  </div>
+
+  <script>
+    function copyScript() {
+      const text = document.getElementById('scriptText').innerText;
+      const btn = document.getElementById('copyBtn');
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => showSuccess(btn)).catch(() => fallbackCopy(text, btn));
+      } else {
+        fallbackCopy(text, btn);
+      }
+    }
+
+    function fallbackCopy(text, btn) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showSuccess(btn);
+      } catch (err) {
+        btn.innerText = 'Failed to copy';
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function showSuccess(btn) {
+      btn.innerText = 'Copied to Clipboard!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerText = 'Copy Script';
+        btn.classList.remove('copied');
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
